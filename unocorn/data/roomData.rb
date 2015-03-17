@@ -3,9 +3,10 @@ ROOMS = [
     :location => "2,2,2",
     :name => "Control Room",
     :welcome_msg => "You're in the Control Room, where you started. You haven't gotten very far.",
-    :items => [{
-        :name => "Useless Junk"
-        }],
+    :items => {
+            "Useless Junk" => {
+            }
+        }
     },
 
     {
@@ -19,9 +20,15 @@ ROOMS = [
         :location => "2,4,2", 
         :welcome_msg => "There's science in here!",
         :actions => {
-            "research" => lambda do |state|
-                puts "You researched the science!\n\nYou Win!!!!!\n\n"
-                exit
+            "research" => lambda do |state, params|
+                if params.downcase == "science"
+                    puts "\nYou researched the science!\nYou Win!!!!!\n\n"
+                    exit
+                elsif params.length == 0
+                    puts "\nYou need to be more specific. What on earth are you trying to research?"
+                else
+                    puts "\nYou're a scientist. And you're researching the wrong thing."
+                end
             end
         }
     },

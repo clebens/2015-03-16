@@ -3,9 +3,21 @@ class State
 
   def initialize(map)
     @position = "2,2,2"
-    @items = []
+    @items = {}
     @triggers = {}
     @map = map
   end
+  
+  def item_display
+      rtn = "\nYou are currently holding: " 
+      if @items.length > 0
+        @items.each do |k,v|
+          rtn += k + " "
+        end
+        rtn += "\n"
+      end
+    rtn
+  end
+
 end
 

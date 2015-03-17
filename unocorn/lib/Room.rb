@@ -6,8 +6,8 @@ class Room
     @name = params.fetch(:name, "Void Within the Unknown")
     @message = params.fetch(:welcome_msg, "default")
     @items = {}
-    params.fetch(:items, []).each do |item|
-      @items[item[:name]] = Item.new(item)
+    params.fetch(:items, {}).each do |k,v|
+      @items[k] = v
     end
 
     @actions = {}
@@ -25,10 +25,33 @@ class Room
     end
 
     exit if action == "q"
-    
+   
+    if /take(.*)/.match(action.downcase)
+        item = $1.strip.downcase
+        first_match = @items.keys.select { |k|
+            k.downcase == item.downcase;
+        }[0]
+        
+        if first_match
+            puts "\nYou took #{first_match}."
+            state.items[first_match] = @items[first_match]
+            @items.delete(first_match)
+            return
+        else
+            puts "\nYou look around endlessly for #{item}, but you can't seem to find it."
+            return
+        end
+    end
+
+    if /inventory/.match(action)
+        puts state.item_display
+        return
+    end
+
+        
     @actions.each do |k,v|
-      if (action == k)
-        v.call(state)
+      if /#{k}(.*)/.match(action.downcase)
+        v.call(state, $1.strip)
         return
       end
     end
@@ -64,6 +87,7 @@ class Room
       rtn = "\n=== #{@name} ===\n"
       rtn += "\n#{@message}\n"
       rtn += item_display
+      rtn += "\n" 
   end
 
   def item_display
@@ -71,9 +95,9 @@ class Room
       if @items.length > 0
         rtn += "\nLooking around, you see the following items carelessly strewn about the room: " 
         @items.each do |k,v|
-          rtn += k
+          rtn += k + " "
         end
-        rtn += "\n\n"
+        rtn += "\n"
       end
     rtn
   end
