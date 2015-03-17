@@ -19,8 +19,8 @@ class Room
 
   def interact(action, state)
 # binding.pry
-    if ["north", "south", "west", "east", "up", "down"].include?(action)
-      move(state, action)
+    if ["north", "south", "west", "east", "up", "down"].include?(action.downcase)
+      move(state, action.downcase)
       return
     end
 
@@ -58,7 +58,7 @@ class Room
 
     puts "Invalid Action"
   end
-
+ 
   def move(state, dir)
     pos = str_to_coord(state.position)
     # dir = [0,1,0] -- north
@@ -72,7 +72,8 @@ class Room
       "down" => [0,0,-1]
     }
     move_vec = dir_vec[dir]
-    new_pos = [pos[0] + move_vec[0], pos[1] + move_vec[1], pos[2] + move_vec[2]].to_s
+    new_pos = vec_add(pos, move_vec)
+      .to_s
       .gsub("[", "")
       .gsub("]", "")
       .gsub(" ", "")

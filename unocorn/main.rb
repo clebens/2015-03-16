@@ -45,8 +45,9 @@ while true
 
 
 print map.rooms[state.position]
+map.print_neighbors(state.position)
 print "-> "
-
 inp = gets.chomp
+system("clear")
 map.rooms[state.position].interact(inp, state)
 end
