@@ -22,8 +22,12 @@ ROOMS = [
         :actions => {
             "research" => lambda do |state, params|
                 if params.downcase == "science"
-                    puts "\nYou researched the science!\nYou Win!!!!!\n\n"
-                    exit
+                    if state.items.include?("Scientist Gear")
+                        puts "\nYou researched the science!\nYou Win!!!!!\n\n"
+                        exit
+                    else
+                        puts "\nYou don't have any Scientist Gear to research the science."
+                    end
                 elsif params.length == 0
                     puts "\nYou need to be more specific. What on earth are you trying to research?"
                 else
@@ -36,7 +40,11 @@ ROOMS = [
     {
         :name => "Control Room Hole",
         :location => "2,2,1",
-        :welcome_msg => "You fell into the hole in the Control Room. There isn't even gravity here. Good work."
+        :welcome_msg => "You fell into the hole in the Control Room. There isn't even gravity here. Good work.",
+        :items => {
+            "Scientist Gear" => {}
+        }
+
     } 
         
 ]
